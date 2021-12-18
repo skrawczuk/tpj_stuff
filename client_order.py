@@ -69,7 +69,8 @@ if __name__ == '__main__':
     order_sheet = pd.read_csv(input_path)
     order_sheet= order_sheet.loc[:, ~order_sheet.columns.str.contains('^Unnamed')]
     for k, v in order_sheet.items():
-        order_sheet.loc[order_sheet[k].str.startswith('novalue'), k] = np.nan
+        order_sheet.loc[order_sheet[k].astype(str).str.startswith('novalue'), k] = np.nan
+
 
     order_sheet['name'] = order_sheet['First Name'] + ' ' + order_sheet['Last Name']
 
