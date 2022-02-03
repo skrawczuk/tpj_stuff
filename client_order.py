@@ -36,7 +36,7 @@ def per_dish_count(order_sheet, dish_names):
             dish_df = pd.DataFrame()
             try:
                 dish_df.loc[:, 'count'] = order_sheet[dish].dropna().apply(
-                    lambda x: max([float(i) for i in str(x).split(',') if i.replace('.', '').isnumeric()]))
+                    lambda x: max([float(i) for i in str(x).replace(' servings', '').split(',') if i.replace('.', '').isnumeric()]))
             except ValueError:
                 print(f'\n\n\nHi chef, please check the CSV for missing amounts for: \n- {dish} \n\n\n')
                 break
@@ -74,10 +74,15 @@ if __name__ == '__main__':
 
     order_sheet['name'] = order_sheet['First Name'] + ' ' + order_sheet['Last Name']
 
-    info_cols = ['name', 'First Name', 'Last Name', 'Phone', 'Email', 'Address for Delivery',
-                 'Comments + Special Requests', 'Locale', 'Submission Source', 'Submitted At']
-    dish_names = [col for col in order_sheet if col not in info_cols]
-      
+    info_cols = ['name', 'First Name', 'Last Name', 'Phone', 'Email Address', 'Email',
+                 'Address for Delivery', 'Address', 'Comments + Special Requests',
+                 'Payment Received', 'Payer Name', 'Payer Address', 'Payer Email',
+                 'Total Payment', 'Quantity', 'Street Address', 'City', 'State / Province',
+                 'Zip / Country', 'Purchase Details', 'Purchase Type', 'Confirmation Code',
+                 'Memo', 'Locale', 'Submission Source', 'Submitted At']
+    dish_names = [col for col in order_sheet if col not in info_cols and not col.endswith('.1')]
+
+
     per_client(order_sheet, dish_names)
     per_dish_count(order_sheet, dish_names)
     per_dish_client(order_sheet, dish_names)
