@@ -5,4 +5,4 @@ cd "$parent_path"
 
 csv=$(find *.csv)
 echo $csv
-python3 client_order.py -i "$csv"
+python3 client_order.py -i "$csv" -p order_history/history.csv
