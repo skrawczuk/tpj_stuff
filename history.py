@@ -4,7 +4,7 @@ import os
 
 def update_history_sheet(history_path, dish_count_df, date):
     if os.path.isfile(history_path):
-        history_sheet = pd.read_csv(history_path, index_col='date')
+        history_sheet = pd.read_csv(history_path, index_col='date', parse_dates=['date'])
     else:
         history_sheet = pd.DataFrame()
 
@@ -13,6 +13,7 @@ def update_history_sheet(history_path, dish_count_df, date):
     dish_count_df = dish_count_df.set_index('date')
 
     history_sheet = history_sheet.append(dish_count_df)
+    history_sheet = history_sheet.sort_values(by='date')
     history_sheet.to_csv(history_path)
 
 
